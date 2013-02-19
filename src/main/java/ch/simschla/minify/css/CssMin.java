@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
+import static ch.simschla.minify.io.IoConstants.EOF;
 import static ch.simschla.minify.precondition.Preconditions.checkNotNull;
 
 /**
@@ -15,8 +16,6 @@ import static ch.simschla.minify.precondition.Preconditions.checkNotNull;
  * Currently implemented Version: <a href="https://github.com/soldair/cssmin/blob/95f998395f35ddccd7babd4256ce2d3dbc9f6fb5/cssmin.c">95f998395f35ddccd7babd4256ce2d3dbc9f6fb5</a>
  */
 public final class CssMin {
-
-	private static final int EOF = -1;
 
 	private final InputStream inputStream;
 	private final OutputStream outputStream;

@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
+import static ch.simschla.minify.io.IoConstants.EOF;
 import static ch.simschla.minify.precondition.Preconditions.checkNotNull;
 
 /**
@@ -15,8 +16,6 @@ import static ch.simschla.minify.precondition.Preconditions.checkNotNull;
  * Currently implemented version: <a href="https://github.com/douglascrockford/JSMin/blob/2a943dba6bae746075749499b1da7955474a47b1/jsmin.c">2a943dba6bae746075749499b1da7955474a47b1</a>
  */
 public final class JsMin {
-
-	private static final int EOF = -1;
 
 	private final InputStream inputStream;
 	private final OutputStream outputStream;
