@@ -41,6 +41,9 @@
         <module name="fast-and-simple-minify" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="fast-and-simple-minify" target="1.6" />
+    </bytecodeTargetLevel>
   </component>
   <component name="CopyrightManager" default="">
     <module2copyright />
