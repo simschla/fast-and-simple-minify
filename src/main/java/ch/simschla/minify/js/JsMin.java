@@ -298,7 +298,7 @@ public final class JsMin {
 
 	//--- inner classes
 
-	private static final class JsMinException extends RuntimeException {
+	static final class JsMinException extends RuntimeException {
 		private JsMinException(String message) {
 			super(message);
 		}
