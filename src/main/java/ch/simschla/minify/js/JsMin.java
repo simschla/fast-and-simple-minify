@@ -9,6 +9,11 @@ import java.nio.charset.Charset;
 
 import static ch.simschla.minify.precondition.Preconditions.checkNotNull;
 
+/**
+ * This is a java port of Douglas Crockford's jsmin utility.
+ *
+ * Currently implemented version: <a href="https://github.com/douglascrockford/JSMin/blob/2a943dba6bae746075749499b1da7955474a47b1/jsmin.c">2a943dba6bae746075749499b1da7955474a47b1</a>
+ */
 public final class JsMin {
 
 	private static final int EOF = -1;

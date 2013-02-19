@@ -9,6 +9,11 @@ import java.nio.charset.Charset;
 
 import static ch.simschla.minify.precondition.Preconditions.checkNotNull;
 
+/**
+ * This is a java port of Ryan Day's cssmin utility.
+ *
+ * Currently implemented Version: <a href="https://github.com/soldair/cssmin/blob/95f998395f35ddccd7babd4256ce2d3dbc9f6fb5/cssmin.c">95f998395f35ddccd7babd4256ce2d3dbc9f6fb5</a>
+ */
 public final class CssMin {
 
 	private static final int EOF = -1;
