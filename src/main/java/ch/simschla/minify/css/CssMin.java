@@ -1,5 +1,7 @@
 package ch.simschla.minify.css;
 
+import ch.simschla.minify.header.CustomHeaderWriter;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -14,8 +16,8 @@ public final class CssMin {
 	private final InputStream inputStream;
 	private final OutputStream outputStream;
 
+	private final CustomHeaderWriter headerWriter;
 	private final String customHeader;
-	private final Charset charset;
 
 	private static enum State {
 		STATE_FREE, STATE_ATRULE, STATE_SELECTOR, STATE_BLOCK, STATE_DECLARATION, STATE_COMMENT;
@@ -35,7 +37,13 @@ public final class CssMin {
 		this.inputStream = builder.inputStream();
 		this.outputStream = builder.outputStream();
 		this.customHeader = builder.customHeader();
-		this.charset = builder.charset();
+		this.headerWriter =
+				CustomHeaderWriter.builder()
+						.charset(builder.charset())
+						.outputStream(builder.outputStream())
+						.commentLinePrefix("/* ")
+						.commentLinePostfix(" */")
+						.build();
 	}
 
 	public void minify() {
@@ -53,16 +61,8 @@ public final class CssMin {
 		}
 	}
 
-	private void writeCustomHeader() throws IOException {
-		if(customHeader.length() > 0) {
-			String[] parts = customHeader.split("\r?\n");
-			for (String part : parts) {
-				if(part.length() > 0) {
-					String escapedCustomHeader = String.format("// %s\n", customHeader);
-					outputStream.write(escapedCustomHeader.getBytes(charset));
-				}
-			}
-		}
+	private void writeCustomHeader() {
+		this.headerWriter.writeHeader(this.customHeader);
 	}
 
 	/* cssmin -- minify the css

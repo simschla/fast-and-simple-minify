@@ -1,5 +1,7 @@
 package ch.simschla.minify.js;
 
+import ch.simschla.minify.header.CustomHeaderWriter;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -15,7 +17,7 @@ public final class JsMin {
 	private final OutputStream outputStream;
 
 	private final String customHeader;
-	private final Charset charset;
+	private final CustomHeaderWriter customHeaderWriter;
 
 	private int theA;
 	private int theB;
@@ -27,7 +29,10 @@ public final class JsMin {
 		this.inputStream = builder.inputStream();
 		this.outputStream = builder.outputStream();
 		this.customHeader = builder.customHeader();
-		this.charset = builder.charset();
+		this.customHeaderWriter = CustomHeaderWriter.builder()
+				.outputStream(builder.outputStream())
+				.charset(builder.charset())
+				.build();
 	}
 
 	public void minify() {
@@ -46,15 +51,7 @@ public final class JsMin {
 	}
 
 	private void writeCustomHeader() throws IOException {
-		if(customHeader.length() > 0) {
-			String[] parts = customHeader.split("\r?\n");
-			for (String part : parts) {
-				if(part.length() > 0) {
-					String escapedCustomHeader = String.format("// %s\n", customHeader);
-					outputStream.write(escapedCustomHeader.getBytes(charset));
-				}
-			}
-		}
+		this.customHeaderWriter.writeHeader(this.customHeader);
 	}
 
 	/* jsmin -- Copy the input to the output, deleting the characters which are
