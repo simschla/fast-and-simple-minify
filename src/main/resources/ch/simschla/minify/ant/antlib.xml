@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<antlib>
+    <taskdef
+            name="minify"
+            classname="ch.simschla.minify.ant.MinifyAntTask"
+            onerror="ignore"/>
+    <!--
+    <typedef
+            name="httpState"
+            classname="net.sf.antcontrib.net.httpclient.HttpStateType"
+            onerror="ignore" />
+    -->
+</antlib>
