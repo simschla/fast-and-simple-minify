@@ -14,12 +14,20 @@ public enum Minifier {
 	CSS("css") {
 		@Override
 		public void minify(InputStream inputStream, OutputStream outputStream, Charset charset, String customHeader) {
-			final CssMin cssMin = CssMin.builder()
-					.inputStream(inputStream)
-					.outputStream(outputStream)
-					.charset(charset)
-					.customHeader(customHeader)
-					.build();
+			CssMin.Builder builder = CssMin.builder();
+			if(inputStream != null) {
+				builder = builder.inputStream(inputStream);
+			}
+			if(outputStream != null) {
+				builder = builder.outputStream(outputStream);
+			}
+			if(charset != null) {
+				builder = builder.charset(charset);
+			}
+			if(customHeader != null) {
+				builder = builder.customHeader(customHeader);
+			}
+			final CssMin cssMin = builder.build();
 			cssMin.minify();
 		}
 	},
@@ -27,12 +35,20 @@ public enum Minifier {
 	JS("js") {
 		@Override
 		public void minify(InputStream inputStream, OutputStream outputStream, Charset charset, String customHeader) {
-			final JsMin jsMin = JsMin.builder()
-					.inputStream(inputStream)
-					.outputStream(outputStream)
-					.charset(charset)
-					.customHeader(customHeader)
-					.build();
+			JsMin.Builder builder = JsMin.builder();
+			if(inputStream != null) {
+				builder = builder.inputStream(inputStream);
+			}
+			if(outputStream != null) {
+				builder = builder.outputStream(outputStream);
+			}
+			if(charset != null) {
+				builder = builder.charset(charset);
+			}
+			if(customHeader != null) {
+				builder = builder.customHeader(customHeader);
+			}
+			final JsMin jsMin = builder.build();
 			jsMin.minify();
 		}
 	};

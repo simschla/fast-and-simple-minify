@@ -1,4 +1,4 @@
-package ch.simschla.minify;
+package ch.simschla.minify.cli;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

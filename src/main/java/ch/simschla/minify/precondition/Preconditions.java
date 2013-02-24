@@ -11,4 +11,13 @@ public final class Preconditions {
 		}
 		return obj;
 	}
+
+	public static <T extends Comparable> T checkLessThan(T actualValue, T upperBorder) {
+		checkNotNull(actualValue);
+		checkNotNull(upperBorder);
+		if(actualValue.compareTo(upperBorder) < 0) {
+			return actualValue;
+		}
+		throw new IllegalArgumentException(actualValue + " should be less than " + upperBorder + " but isn't.");
+	}
 }

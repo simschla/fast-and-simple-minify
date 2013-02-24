@@ -20,7 +20,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>ch.simschla.minify.App</mainClass>
+                            <mainClass>ch.simschla.minify.cli.App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
