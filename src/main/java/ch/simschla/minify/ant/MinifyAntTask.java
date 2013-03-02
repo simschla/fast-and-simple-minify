@@ -1,11 +1,11 @@
 package ch.simschla.minify.ant;
 
 import ch.simschla.minify.adapter.Minifier;
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.Task;
+import org.apache.tools.ant.*;
 import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.types.FileSet;
+import org.apache.tools.ant.types.Mapper;
+import org.apache.tools.ant.types.ResourceCollection;
 import org.apache.tools.ant.util.FileNameMapper;
 import org.apache.tools.ant.util.FileUtils;
 
@@ -23,6 +23,7 @@ public class MinifyAntTask extends Task {
 	private final FileUtils fileUtils;
 
 	private String header = "";
+	private ConversionType type = ConversionType.auto;
 
 	public MinifyAntTask() {
 		delegate = createNewConfiguredDelegate();
@@ -46,7 +47,7 @@ public class MinifyAntTask extends Task {
 
 	private void minify(String fromFile, List<String> toFiles) {
 
-		Minifier minifierForFile = Minifier.forFileName(fromFile);
+		Minifier minifierForFile = determineMinifier(fromFile);
 
 		if (minifierForFile == null) {
 			log("Cannot minify file " + fromFile + " - unsupported file type!", Project.MSG_DEBUG);
@@ -56,6 +57,16 @@ public class MinifyAntTask extends Task {
 		for (String toFile : toFiles) {
 			minifyOneFile(minifierForFile, new File(fromFile), new File(toFile));
 		}
+	}
+
+	private Minifier determineMinifier(String fromFile) {
+		Minifier minifierForFile = null;
+		if(type() == ConversionType.auto) {
+			minifierForFile = Minifier.forFileName(fromFile);
+		} else {
+			minifierForFile = Minifier.forFileName("filename." + type().name());
+		}
+		return minifierForFile;
 	}
 
 	private void minifyOneFile(Minifier minifier, File fromFile, File toFile) {
@@ -101,6 +112,14 @@ public class MinifyAntTask extends Task {
 
 	private Charset charset() {
 		return Charset.forName(delegate.getEncoding());
+	}
+
+	public void setType(ConversionType type) {
+		this.type = type;
+	}
+
+	private ConversionType type() {
+		return this.type;
 	}
 
 	//---- delegation methods
@@ -158,7 +177,66 @@ public class MinifyAntTask extends Task {
 		delegate.add(fileNameMapper);
 	}
 
-	//---- adapters for the corresponding minification strategy
+	public Mapper createMapper() throws BuildException {
+		return delegate.createMapper();
+	}
+
+	public void add(ResourceCollection res) {
+		delegate.add(res);
+	}
+
+	//---- override and delegate
+
+	@Override
+	public void setProject(Project project) {
+		super.setProject(project);
+		delegate.setProject(project);
+	}
+
+	@Override
+	public void setOwningTarget(Target target) {
+		super.setOwningTarget(target);
+		delegate.setOwningTarget(target);
+	}
+
+	@Override
+	public void setTaskName(String name) {
+		super.setTaskName(name);
+		delegate.setTaskName(name);
+	}
+
+	@Override
+	public void setTaskType(String type) {
+		super.setTaskType(type);
+		delegate.setTaskType(type);
+	}
+
+	@Override
+	public void setRuntimeConfigurableWrapper(RuntimeConfigurable wrapper) {
+		super.setRuntimeConfigurableWrapper(wrapper);
+		delegate.setRuntimeConfigurableWrapper(wrapper);
+	}
+
+	@Override
+	public void setLocation(Location location) {
+		super.setLocation(location);
+		delegate.setLocation(location);
+	}
+
+	@Override
+	public void setDescription(String desc) {
+		super.setDescription(desc);
+		delegate.setDescription(desc);
+	}
+
+	//---- enum to be used in type
+
+	/**
+	 * Enum for selecting conversion type. Enum values in lower case for easier reading in ant file.
+	 */
+	public static enum ConversionType {
+		auto, css, js;
+	}
 
 	//---- our own version of the copy task to use as a delegator. This allows us to only use as much code as we really need.
 
