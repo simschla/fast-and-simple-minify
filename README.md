@@ -10,7 +10,7 @@ The minification performed by this utility is intended to reduce _unneeded chars
 
 Using the <a name="cli"></a>command-line interface
 ------------------------------------------------
-The command line interface allows to use fast-and-simple-minify as any other command-line tool. You can minify any css and js file by issuing some simple statements from the command-line.
+The command line interface allows to use fast-and-simple-minify as any other command-line tool. You can minify any css and js files by issuing some simple statements from the command-line.
 
 In contrast to the original command-line tools [JSMin][jsmin] and [CSSMin][cssmin], fast-and-simple-minify is not only able to minify from stdin to stdout but can also read from a file and write to a file directly.
 
@@ -87,10 +87,109 @@ This will read the file `style.css` and minify it to the output file `style-min.
 
 Using the <a name="ant"></a> Ant-Integration 
 ------------------------------------------
-still to be written...
+Using the fast-and-simple-minify's `minify` ant task, you can enhance your ant build to very quickly minify css and js files in the process. The `minify` ant task has a very similar interface as ant's very own [copy][copytask]-task.
+
+### Integrating the `minify`-ant-task into your ant build
+
+There are several ways you can integrate the minify ant task into your ant build.
+
+#### Integration without namespace prefixes
+Using `taskdef` and `classpath` tasks without explicitly specifying the minify jar file:
+
+```xml
+<taskdef resource="ch/simschla/minify/ant/antlib.xml">
+    <classpath>
+        <fileset dir="${basedir}/path/to/where/the/jar/file/is" includes="fast-and-simple-minify*.jar"/>
+    </classpath>
+</taskdef>
+```
+
+or if you don't mind selecting the minify jar file explicitly this is even simpler:
+
+```xml
+<taskdef resource="ch/simschla/minify/ant/antlib.xml" classpath="path/to/fast-and-simple-minify-1.0.jar"/>
+```
+
+In both cases you can then use the `minify` ant task without any namespacing directly.
+
+#### Integration with namespace-prefix
+
+If you'd like to have a namespace for the minify task (for whatever reasons) you can do so. Integrate it as follows:
+
+```xml
+<project xmlns:simschla="antlib:ch.simschla.minify">
+....
+    <taskdef uri="antlib:ch.simschla.minify" resource="ch/simschla/minify/ant/antlib.xml" classpath="path/to/fast-and-simple-minify-1.0.jar/>
+... 
+</project>
+```
+
+Including it this way, you have to use the minify task with the `simschla`-namespace as follows:
+
+```xml   
+<target name="example">
+     <simschla:minify todir="outdir" ...>
+         ...
+     </simschla:minify>
+</target>
+```
+
+The namespace to use is up to you, so feel free to use a different one if you don't like mine.
+
+The examples below use the minify task without a namespaces. If you decide to include the `minify` task with a namespace, they will work the same way, simply use the `minify` task with the namespace.
+
+### Definition/API of the `minify` ant task
+
+todo
+
+### Usage examples of the `minify` ant task
+
+These are usage examples of the minify task. The complete specification can be seen below.
+
+#### Example 1: Minify one file to another file
+
+```xml
+<minify file="sample/sample1.css"
+        tofile="output/sample1-min.css" />
+```
+
+This will minify the file `sample1.css` to the output file `sample1-min.css` by automatically selecting the minifier `cssmin` based on the filenames.
+
+#### Example 2: Minify one file to another and add a copyright header
+
+```xml
+<minify header="(c) 2013 by simschla"
+        file="sample/sample1.css"
+        tofile="output/sample1-min.css" />
+```
+
+This will minify the file `sample1.css` to the output file `sample1-min.css` by automatically selecting the minifier `cssmin` based on the filenames. The output file `sample1-min.css` will start with the copyright header "(c) 2013 by simschla".
+
+#### Example 3: Minify a set of files to another folder
+
+```xml
+<minify type="auto" todir="output/minified">
+    <fileset dir="path/to/resources" includes="**/*.css, **/*.js" />
+</minify>
+```
+
+This will minify all css and js files located in the folder `path/to/resources` to the folder `output/minifed`. The minifier is automatically selected based on the name of the files, that are minifed.
+
+#### Example 4: Minify a set of files and rename them in the process
+
+```xml
+<minify type="css"
+        todir="output/resources/styles"
+        overwrite="true">
+        <fileset dir="input/resources/styles" includes="*.css" />
+        <regexpmapper from="^(.*)\.(.*)$" to="\1-min.\2" />
+</minify>
+```
+
+This will minify all css files located in the `input/resources/styles` folder using cssmin. The output files are written to `output/resources/styles`. All files are renamed based on a regex that renames every `filexyz.css` to `filexyz-min.css`.
 
 [jsmin]: https://github.com/douglascrockford/JSMin
 [cssmin]: https://github.com/soldair/cssmin
 [yui]: http://yui.github.com/yuicompressor/
 [jre]: http://www.java.com
-
+[copytask]: http://ant.apache.org/manual/Tasks/copy.html

@@ -1,0 +1,26 @@
+<project name="Minify-Examples" default="auto" basedir="." xmlns:simschla="antlib:ch.simschla.minify">
+
+    <description>
+        Build File to test ant target for minifying.
+    </description>
+
+    <property name="sample.dir" location="${basedir}/sample-data"/>
+
+    <taskdef uri="antlib:ch.simschla.minify"
+             resource="ch/simschla/minify/ant/antlib.xml">
+        <classpath>
+            <fileset dir="${basedir}/../../../target/" includes="fast-and-simple-minify*.jar"/>
+        </classpath>
+    </taskdef>
+
+    <target name="auto" description="Simple auto one-file minifications">
+        <simschla:minify type="auto"
+                encoding="UTF-8"
+                header="simple auto"
+                file="${sample.dir}/sample1.css"
+                tofile="${java.io.tmpdir}/sample1-min.css"/>
+        <echo message="Minified to ${java.io.tmpdir}/sample1-min.css"/>
+
+   </target>
+
+</project>
