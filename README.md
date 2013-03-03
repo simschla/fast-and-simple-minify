@@ -38,7 +38,7 @@ All options in square brackets are optional and defined as follows:
 
 #### Reading a file and writing the minified result to a file
 
-```
+```Shell
 java -jar fast-and-simple-minify-1.0.jar -out script-min.js script.js
 ```
 
@@ -46,7 +46,7 @@ This reads the file `script.js` and writes the output to `script-min.js`. fast-a
 
 #### Reading a file and write the result to stdout
 
-```
+```Shell
 java -jar fast-and-simple-minify-1.0.jar style.css
 ```
 
@@ -54,7 +54,7 @@ This will read the file `style.css` and outputs the result to stdout. fast-and-s
 
 #### Reading multiple files and writing the result *using stdout* into one single output file 
 
-```
+```Shell
 java -jar fast-and-simple-minify-1.0.jar style1.css > styles.css  
 java -jar fast-and-simple-minify-1.0.jar style2.css >> styles.css  
 java -jar fast-and-simple-minify-1.0.jar style3.css >> styles.css  
@@ -70,7 +70,7 @@ The result is a single file `styles.css` that holds the minified content of the 
 
 #### Reading multiple files from stdin and writing to an output file
 
-```
+```Shell
 cat style*.css | java -jar fast-and-simple-minify-1.0.jar -out allstyles-min.css
 ```
 
@@ -78,7 +78,7 @@ This will read all files matching the pattern `style*.css` (e.g. style1.css, sty
 
 #### Reading a file, minify it and add a copyright header to the minified version.
 
-```
+```Shell
 java -jar fast-and-simple-minify-1.0.jar -encoding ISO-8859-15 -comment "(c) 2013 by simschla" -out style-min.css style.css
 ```
 
@@ -140,7 +140,172 @@ The examples below use the minify task without a namespaces. If you decide to in
 
 ### Definition/API of the `minify` ant task
 
-todo
+#### Description
+
+Minifies css and js files. The task itself is very similar to ant's [copy][copytask] and has a very similar paremeter set.
+
+By default, files are only minified if the destination file does not exist. However, you can explicitly overwrite files with the overwrite attribute.
+
+[Resource Collections][antrescoll] are used to select a group of files to minify. To use a resource collection, the todir attribute must be set. *Note* that some resources (for example the [file][antresfile] resource) return absolute paths as names and the result of using them without using a nested mapper (or the flatten attribute) may not be what you expect.
+
+#### Parameters
+
+<table border="1" cellpadding="2" cellspacing="0">
+    <tbody>
+        <tr>
+            <td valign="top">
+                <b>
+                    Attribute
+                </b>
+            </td>
+            <td valign="top">
+                <b>
+                    Description
+                </b>
+            </td>
+            <td align="center" valign="top">
+                <b>
+                    Required
+                </b>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">
+                file
+            </td>
+            <td valign="top">
+                The file to minify.
+            </td>
+            <td valign="top" align="center">
+                Yes, unless a nested resource collection element is used.
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">
+                tofile
+            </td>
+            <td valign="top">
+                The file to write the minifed result to.
+            </td>
+            <td valign="top" align="center" rowspan="2">
+                With the <code>file</code> attribute, either <code>tofile</code> or <code>todir</code>
+                can be used.
+                <br/>
+                With nested resource collection elements, if the number of included resources
+                is greater than 1, or if only the <code>dir</code>attribute is specified in the
+                <code>&lt;fileset&gt;</code>, or if the <code>file</code> attribute is also specified, then only
+                <code>todir</code>is allowed.
+                <br/>
+                <em>Prior to Apache Ant 1.8.2</em> the <code>tofile</code>
+                attribute only supports filesystem resources to copy from.
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">
+                todir
+            </td>
+            <td valign="top">
+                The directory to copy to.
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">
+                overwrite
+            </td>
+            <td valign="top">
+                Overwrite existing files.
+            </td>
+            <td valign="top" align="center">
+                No; defaults to false.
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">
+                flatten
+            </td>
+            <td valign="top">
+                Ignore the directory structure of the source files, and write all minified files
+                into the directory specified by the <code>todir</code>
+                attribute. Note that you can achieve the same effect by using a
+                <a href="http://ant.apache.org/manual/Types/mapper.html#flatten-mapper">flatten mapper</a>.
+            </td>
+            <td valign="top" align="center">
+                No; defaults to false.
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">
+                failonerror
+            </td>
+            <td valign="top">
+                If false, log a warning message, but do not stop the build, when the file
+                to minify does not exist or one of the nested filesets points to a directory
+                that doesn't exist or an error occurs while minifying.
+            </td>
+            <td valign="top" align="center">
+                No; defaults to true.
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">
+                encoding
+            </td>
+            <td valign="top">
+                The encoding to use when adding a custom <code>header</code> when minifying the files.
+                <br/>
+                This property has no effect when <code>header</code> is empty.
+            </td>
+            <td align="center">
+                No - defaults to UTF-8.
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">
+                enablemultiplemappings
+            </td>
+            <td valign="top">
+                If true the task will process to all the mappings for a given source path.
+                If false the task will only process the first file or directory. This attribute
+                is only relevant if there is a mapper subelement.
+                <em>
+                    since Ant 1.6
+                </em>
+                .
+            </td>
+            <td align="center">
+                No - defaults to false.
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">
+                header
+            </td>
+            <td valign="top">
+                A string to be written to the beginning of every minified file. A typical usecase
+                is to write a copyright header here, since comments in the source files are removed by the
+                minifying process.
+            </td>
+            <td align="center">
+                No - defaults to no header.
+            </td>
+        </tr>
+</table>
+
+#### Parameters specified as nested elements
+
+##### fileset or any other resource collection
+
+[Resource Collections][antrescoll] are used to select groups of files to copy. To use a resource collection, the todir attribute must be set.
+
+Prior to Ant 1.7 only <fileset> has been supported as a nested element.
+
+##### mapper
+
+You can define filename transformations by using a nested mapper element. The default mapper used by `<minify>` is the [identity mapper][antidmapp].
+
+Since Ant 1.6.3, one can use a filenamemapper type in place of the mapper element.
+
+Note that the source name handed to the mapper depends on the resource collection you use. If you use `<fileset>` or any other collection that provides a base directory, the name passed to the mapper will be a relative filename, relative to the base directory. In any other case the absolute filename of the source will be used.
 
 ### Usage examples of the `minify` ant task
 
@@ -173,7 +338,7 @@ This will minify the file `sample1.css` to the output file `sample1-min.css` by 
 </minify>
 ```
 
-This will minify all css and js files located in the folder `path/to/resources` to the folder `output/minifed`. The minifier is automatically selected based on the name of the files, that are minifed.
+This will minify all css and js files located in the folder `path/to/resources` to the folder `output/minified`. The minifier is automatically selected based on the name of the files, that are minified.
 
 #### Example 4: Minify a set of files and rename them in the process
 
@@ -193,3 +358,7 @@ This will minify all css files located in the `input/resources/styles` folder us
 [yui]: http://yui.github.com/yuicompressor/
 [jre]: http://www.java.com
 [copytask]: http://ant.apache.org/manual/Tasks/copy.html
+[antrescoll]: http://ant.apache.org/manual/Types/resources.html#collection
+[antresfile]: http://ant.apache.org/manual/Types/resources.html#file
+[antidmapp]: http://ant.apache.org/manual/Types/mapper.html#identity-mapper
+

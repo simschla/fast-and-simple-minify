@@ -185,6 +185,11 @@ public class MinifyAntTask extends Task {
 		delegate.add(res);
 	}
 
+	public void setEnableMultipleMappings(boolean enableMultipleMappings) {
+		delegate.setEnableMultipleMappings(enableMultipleMappings);
+	}
+
+
 	//---- override and delegate
 
 	@Override
