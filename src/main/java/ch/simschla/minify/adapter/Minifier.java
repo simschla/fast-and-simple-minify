@@ -32,26 +32,26 @@ public enum Minifier {
 		}
 	},
 
-	JS("js") {
+	JS("js", "_js", "bones", "jake", "jsfl", "jsm", "jss", "jsx", "pac", "sjs", "ssjs") {
 		@Override
 		public void minify(InputStream inputStream, OutputStream outputStream, Charset charset, String customHeader) {
 			JsMin.Builder builder = JsMin.builder();
-			if(inputStream != null) {
+			if (inputStream != null) {
 				builder = builder.inputStream(inputStream);
 			}
-			if(outputStream != null) {
+			if (outputStream != null) {
 				builder = builder.outputStream(outputStream);
 			}
-			if(charset != null) {
+			if (charset != null) {
 				builder = builder.charset(charset);
 			}
-			if(customHeader != null) {
+			if (customHeader != null) {
 				builder = builder.customHeader(customHeader);
 			}
 			final JsMin jsMin = builder.build();
 			jsMin.minify();
 		}
-	};
+	},;
 
 	private final FilenameFilter fileNameFilter;
 
@@ -63,7 +63,8 @@ public enum Minifier {
 					return false;
 				}
 				for (String acceptedFileType : acceptedFileTypes) {
-					if(name.endsWith(acceptedFileType)) {
+					if (name.endsWith("." + acceptedFileType)) {
+
 						return true;
 					}
 				}
