@@ -19,7 +19,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <addClasspath>true</addClasspath>
+                            <addClasspath>false</addClasspath>
                             <mainClass>ch.simschla.minify.cli.App</mainClass>
                         </manifest>
                     </archive>
