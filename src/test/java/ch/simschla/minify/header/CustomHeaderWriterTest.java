@@ -91,8 +91,8 @@ public class CustomHeaderWriterTest {
 
 	}
 
-	private String write(String stringToWrite) {
+	private String write(String stringToWrite) throws Exception {
 		headerWriter.writeHeader(stringToWrite);
-		return headerTarget.toString();
+		return headerTarget.toString("UTF-8");
 	}
 }
