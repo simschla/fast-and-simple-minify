@@ -73,6 +73,7 @@ public class MinifyAntTask extends Task {
 		if(shouldSkipMinification(fromFile, toFile)) {
 			return;
 		}
+		createDirectoriesIfNeeded(toFile);
 		FileInputStream in = null;
 		FileOutputStream out = null;
 		try {
@@ -84,6 +85,13 @@ public class MinifyAntTask extends Task {
 		} finally {
 			close(in);
 			close(out);
+		}
+	}
+
+	private void createDirectoriesIfNeeded(File toFile) {
+		final File parentFile = toFile.getParentFile();
+		if(parentFile != null && !parentFile.exists()) {
+			parentFile.mkdirs();
 		}
 	}
 
