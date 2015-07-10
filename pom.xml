@@ -4,7 +4,7 @@
 
   <groupId>ch.simschla</groupId>
   <artifactId>fast-and-simple-minify</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <packaging>jar</packaging>
 
   <name>fast-and-simple-minify</name>
