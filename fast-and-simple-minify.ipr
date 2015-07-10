@@ -642,9 +642,6 @@
     </profiles>
     <list size="0" />
   </component>
-  <component name="AntConfiguration">
-    <defaultAnt bundledAnt="true" />
-  </component>
   <component name="CheckStyle-IDEA">
     <option name="configuration">
       <map>
