@@ -8,7 +8,28 @@
   <packaging>jar</packaging>
 
   <name>fast-and-simple-minify</name>
-  <url>http://maven.apache.org</url>
+  <description>fast-and-simple-minify is a combined java-port of the JSMin and CSSMin utility with some additional features</description>
+  <url>https://github.com/simschla/fast-and-simple-minify</url>
+    
+  <licenses>
+      <license>
+          <name>The Apache License, Version 2.0</name>
+          <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      </license>
+  </licenses>
+    
+  <developers>
+      <developer>
+          <name>Simon Schlachter</name>
+          <email>github@survive.ch</email>
+      </developer>
+  </developers>
+    
+  <scm>
+      <connection>scm:git:git@github.com:simschla/fast-and-simple-minify.git</connection>
+      <developerConnection>scm:git:git@github.com:simschla/fast-and-simple-minify.git</developerConnection>
+      <url>git@github.com:simschla/fast-and-simple-minify.git</url>
+  </scm>  
 
     <distributionManagement>
         <snapshotRepository>
@@ -83,7 +104,7 @@
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.3</version>
+                <version>1.6.5</version>
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>ossrh</serverId>
