@@ -353,6 +353,42 @@ This will minify all css and js files located in the folder `path/to/resources` 
 
 This will minify all css files located in the `input/resources/styles` folder using cssmin. The output files are written to `output/resources/styles`. All files are renamed based on a regex that renames every `filexyz.css` to `filexyz-min.css`.
 
+Using fast-and-simple-minify in your project
+--------------------------------------------
+
+### Maven
+
+To include fast-and-simple-minify into your maven project use the snippet:
+
+```xml
+<dependency>
+  <groupId>ch.simschla</groupId>
+  <artifactId>fast-and-simple-minify</artifactId>
+  <version>1.0</version>
+</dependency>
+```
+
+### Gradle
+
+To include it via Gradle add maven central repo and the dependency, e.g. like below
+
+```gradle
+compile 'ch.simschla:fast-and-simple-minify:1.0'
+```
+
+### Apache Ivy
+
+To add a dependency via Apache Ivy use the following snippet
+
+```xml
+<dependency org="ch.simschla" name="fast-and-simple-minify" rev="1.0"/>
+```
+
+### Manually
+
+To add fast-and-simple-minify manually download the required jars from [github release](https://github.com/simschla/fast-and-simple-minify/releases/tag/1.0).
+fast-and-simple-minify has no transitive dependencies, so just pick the jar file and off you go.
+
 [jsmin]: https://github.com/douglascrockford/JSMin
 [cssmin]: https://github.com/soldair/cssmin
 [yui]: http://yui.github.com/yuicompressor/
