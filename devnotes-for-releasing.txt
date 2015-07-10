@@ -1,0 +1,34 @@
+This is just for myself, to remember how to deliver a new release to maven central.
+
+1. Setup maven settings xml according to sonatypes guide: http://central.sonatype.org/pages/ossrh-guide.html
+
+2. commit & push everything
+
+3. try with snapshot release first: 
+   mvn clean deploy
+   
+4. if everything works, update version number (remove the -SNAPSHOT), tag and push:
+   mvn versions:set -DnewVersion=1.1
+   git add pom.xml
+   git commit -m "Releasing Version 1.1"
+   git tag "1.1"
+   git push --tags
+   
+5. release this version to maven central
+   mvn clean deploy
+   
+6. update the release with binaries on github: https://github.com/simschla/fast-and-simple-minify/releases
+   Draft a new release
+   Use tag from step 4
+   Add jars found locally in fast-and-simple-minify/target/nexus-staging/staging/<hash>/ch/simschla/fast-and-simple-minify/<version>
+   
+7. Update the README.md file then
+   git add README.md
+   git commit -m "Updating documentation for v1.1"
+   git push
+   
+8. Prepare for the next version
+    mvn versions:set -DnewVersion=1.2-SNAPSHOT
+    git add pom.xml
+    git commit -m "Prepare for next version"
+
