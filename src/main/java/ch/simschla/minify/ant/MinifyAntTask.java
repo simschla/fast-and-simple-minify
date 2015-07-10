@@ -132,8 +132,8 @@ public class MinifyAntTask extends Task {
 
 	//---- delegation methods
 
-	/**
-	 * pass through -> will get back to us in {@link this.delegate#doFileOperations()}
+	/*
+	 * pass through -- will get back to us in {@link this.delegate#doFileOperations()}
 	 * @throws BuildException when delegate throws one
 	 */
 	@Override
